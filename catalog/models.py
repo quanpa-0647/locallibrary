@@ -1,5 +1,4 @@
 from django.db import models
-<<<<<<< HEAD
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 import uuid
@@ -110,7 +109,3 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
-=======
-
-# Create your models here.
->>>>>>> 045733a (Django Tutorial Part 2: Creating a skeleton website)
