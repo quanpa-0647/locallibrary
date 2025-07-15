@@ -3,6 +3,8 @@ from catalog.models import Book, BookInstance, Author, Genre
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .constants import LoanStatus
+from django.contrib.auth.mixins import LoginRequiredMixin
+from constants import MAX_BOOK_PAGINATE
 
 # Create your views here.
 def index(request):
@@ -30,16 +32,12 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 10
+    paginate_by = MAX_BOOK_PAGINATE
     
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(BookListView, self).get_context_data(**kwargs)
-        
-        # Create any data and add it to the context
-        context['some_data'] = 'This is just some data'
-        
-        return context
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    model = BookInstance
+    paginate_by = MAX_BOOK_PAGINATE
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
 
 class BookDetailView(generic.DetailView):
     model = Book
