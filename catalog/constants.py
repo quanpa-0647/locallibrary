@@ -13,3 +13,5 @@ class LoanStatus(models.TextChoices):
     ON_LOAN = 'o', _('On loan')
     AVAILABLE = 'a', _('Available')
     RESERVED = 'r', _('Reserved')
+
+MAX_BOOK_PAGINATE = 10

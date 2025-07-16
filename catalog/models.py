@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 import uuid
 from .constants import LoanStatus
+from django.contrib.auth.models import User
+from datetime import date
+
 from catalog.constants import (
     MAX_LENGTH_GENRE_NAME,
     MAX_LENGTH_BOOK_TITLE,
@@ -45,7 +48,9 @@ class Book(models.Model):
         'ISBN',
         max_length=MAX_LENGTH_ISBN,
         unique=True,
-        help_text=_('13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
+        help_text=_(
+            '13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>'
+        )
     )
 
     genre = models.ManyToManyField(
@@ -74,6 +79,7 @@ class Book(models.Model):
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book."""
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     id = models.UUIDField(
         primary_key=True,
@@ -94,9 +100,14 @@ class BookInstance(models.Model):
         default=LoanStatus.MAINTENANCE,
         help_text=_('Book availability'),
     )
+    
+    @property
+    def is_overdue(self):
+        return self.due_back and date.today() > self.due_back
 
     class Meta:
         ordering = ['due_back']
+        permissions = (("can_mark_returned", "Set book as returned"),)
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
