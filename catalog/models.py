@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 import uuid
-
+from .constants import LoanStatus
 from catalog.constants import (
     MAX_LENGTH_GENRE_NAME,
     MAX_LENGTH_BOOK_TITLE,
@@ -10,7 +10,6 @@ from catalog.constants import (
     MAX_LENGTH_ISBN,
     MAX_LENGTH_AUTHOR_NAME,
     MAX_LENGTH_BOOK_IMPRINT,
-    LOAN_STATUS
 )
 
 
@@ -90,9 +89,9 @@ class BookInstance(models.Model):
 
     status = models.CharField(
         max_length=1,
-        choices=LOAN_STATUS,
+        choices=LoanStatus.choices,
         blank=True,
-        default='m',
+        default=LoanStatus.MAINTENANCE,
         help_text=_('Book availability'),
     )
 
