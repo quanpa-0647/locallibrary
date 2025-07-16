@@ -13,7 +13,8 @@ from catalog.models import Book, BookInstance, Author
 from .constants import (
     LoanStatus,
     DEFAULT_RENEWAL_WEEKS,
-    MAX_BOOK_PAGINATE
+    MAX_BOOK_PAGINATE,
+    MAX_AUTHOR_PAGINATE,
 )
 
 def index(request):
@@ -81,6 +82,13 @@ def renew_book_librarian(request, pk):
     }
 
     return render(request, 'catalog/book_renew_librarian.html', context)
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = MAX_AUTHOR_PAGINATE
+    
+class AuthorDetailView(generic.DetailView):
+    model = Author
 
 class AuthorCreate(CreateView):
     model = Author
