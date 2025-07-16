@@ -15,3 +15,5 @@ class LoanStatus(models.TextChoices):
     RESERVED = 'r', _('Reserved')
 
 MAX_BOOK_PAGINATE = 10
+MAX_RENEWAL_WEEKS = 4
+DEFAULT_RENEWAL_WEEKS = 3
