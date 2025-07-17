@@ -12,6 +12,12 @@
                 {{ bookinst.book.title }}
             </a>
             - {% trans "Due back" %}: {{ bookinst.due_back }}
+
+            {% if perms.catalog.can_mark_returned %}
+                <a href="{% url 'renew-book-librarian' bookinst.pk %}" class="btn btn-sm btn-outline-primary ms-2">
+                    {% trans "Renew" %}
+                </a>
+            {% endif %}
         </li>
     {% empty %}
         <li>{% trans "No borrowed books." %}</li>
@@ -19,4 +25,5 @@
 </ul>
 {% else %}
 <p>{% trans "There are no books borrowed." %}</p>
-{% endif %} {% endblock %}
+{% endif %}
+{% endblock %}
